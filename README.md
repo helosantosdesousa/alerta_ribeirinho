@@ -1,9 +1,15 @@
-# Alerta Ribeirinho 📱
+# Alerta Ribeirinho 📱⚠️
 
 Aplicativo móvel para segurança ambiental com foco em áreas ribeirinhas. A solução utiliza mapas e geolocalização para auxiliar na visualização de regiões afetadas por possíveis enchentes ou alertas ambientais.
 
+![GIF demonstrando o aplicativo alerta ribeirinho](assets/images/demo_ribeirinho.gif)
+
 ## Grupo
 - Heloísa Santos de Sousa - 550256
+- Samuel de Paula Santolim -
+- Francisco Henrique Lima -
+- Lucas Henrique Carrascosa -
+- Pedro Reginaldo -
 
 ## 📱 Tecnologias utilizadas
 
@@ -25,3 +31,9 @@ Aplicativo móvel para segurança ambiental com foco em áreas ribeirinhas. A so
      flutter emulators --launch nome_do_emulador
      flutter run
    ```
+## Compatível com
+- Android
+- iOS
+- Windows
+- MacOS
+- Linux

@@ -3,7 +3,7 @@ O Alerta Ribeirinho é um aplicativo móvel para segurança ambiental com foco e
 
 ![GIF demonstrando o aplicativo alerta ribeirinho](assets/images/demo_ribeirinho.gif)
 
-## Grupo
+## 👤 Grupo
 - Heloísa Santos de Sousa - 550256
 - Samuel de Paula Santolim -
 - Francisco Henrique Lima -
@@ -22,10 +22,10 @@ O Alerta Ribeirinho é um aplicativo móvel para segurança ambiental com foco e
 1. **Clone o repositório**:
    ```bash
    git clone https://github.com/seu-usuario/alerta_ribeirinho.git
-   cd alerta_ribeirinho ```
-2. Instale as dependências:
+   cd alerta_ribeirinho 
+2. **Instale as dependências:**
    ``` flutter pub get ```
-3. Executar o projeto
+3. **Executar o projeto**
      ```
      flutter emulators --launch nome_do_emulador
      flutter run

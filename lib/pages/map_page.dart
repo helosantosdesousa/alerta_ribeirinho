@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -11,10 +14,11 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  LatLng _userLocation = LatLng(-23.5505, -46.6333);
+  LatLng _mapCenter = LatLng(-23.5505, -46.6333);
   bool _locationLoaded = false;
 
   final TextEditingController _searchController = TextEditingController();
+  final MapController _mapController = MapController();
 
   @override
   void initState() {
@@ -35,9 +39,50 @@ class _MapPageState extends State<MapPage> {
 
     Position position = await Geolocator.getCurrentPosition();
     setState(() {
-      _userLocation = LatLng(position.latitude, position.longitude);
+      _mapCenter = LatLng(position.latitude, position.longitude);
       _locationLoaded = true;
     });
+  }
+
+  Future<void> _searchAddress(String address) async {
+    final url = Uri.parse(
+      'https://nominatim.openstreetmap.org/search?q=$address&format=json&limit=1',
+    );
+
+    try {
+      final response = await http.get(url, headers: {});
+
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body);
+        if (data.isNotEmpty) {
+          final lat = double.parse(data[0]['lat']);
+          final lon = double.parse(data[0]['lon']);
+
+          LatLng newPosition = LatLng(lat, lon);
+          setState(() {
+            _mapCenter = newPosition;
+          });
+
+          _mapController.move(newPosition, 15);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Localização encontrada: $address')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Endereço não encontrado.')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erro ao buscar o endereço.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erro: $e')));
+    }
   }
 
   void _onSearch() {
@@ -48,12 +93,8 @@ class _MapPageState extends State<MapPage> {
       );
       return;
     }
-    // Por enquanto, só exibe o texto digitado. Depois pode integrar geocoding.
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Buscando endereço: $input')));
-    // Limpa o campo de busca se quiser:
-    // _searchController.clear();
+
+    _searchAddress(input);
   }
 
   @override
@@ -105,7 +146,8 @@ class _MapPageState extends State<MapPage> {
                 ),
                 Expanded(
                   child: FlutterMap(
-                    options: MapOptions(center: _userLocation, zoom: 15),
+                    mapController: _mapController,
+                    options: MapOptions(center: _mapCenter, zoom: 15),
                     children: [
                       TileLayer(
                         urlTemplate:
@@ -115,7 +157,7 @@ class _MapPageState extends State<MapPage> {
                       MarkerLayer(
                         markers: [
                           Marker(
-                            point: _userLocation,
+                            point: _mapCenter,
                             width: 40,
                             height: 40,
                             child: const Icon(

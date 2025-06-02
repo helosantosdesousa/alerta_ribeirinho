@@ -1,6 +1,5 @@
 # Alerta Ribeirinho 📱⚠️
-
-Aplicativo móvel para segurança ambiental com foco em áreas ribeirinhas. A solução utiliza mapas e geolocalização para auxiliar na visualização de regiões afetadas por possíveis enchentes ou alertas ambientais.
+O Alerta Ribeirinho é um aplicativo móvel para segurança ambiental com foco em áreas ribeirinhas projetado para mitigar os impactos de enchentes urbanas. Ele integra conceitos da Sociedade 5.0, utilizando tecnologias como IoT, Inteligência Artificial (IA), Big Data e redes colaborativas para fornecer alertas antecipados e personalizados, facilitar a comunicação bidirecional, otimizar a resposta a emergências e promover a educação e o engajamento da comunidade na prevenção e recuperação.
 
 ![GIF demonstrando o aplicativo alerta ribeirinho](assets/images/demo_ribeirinho.gif)
 

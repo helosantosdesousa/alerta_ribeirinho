@@ -14,6 +14,8 @@ class _MapPageState extends State<MapPage> {
   LatLng _userLocation = LatLng(-23.5505, -46.6333);
   bool _locationLoaded = false;
 
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -38,35 +40,94 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+  void _onSearch() {
+    String input = _searchController.text.trim();
+    if (input.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, digite um endereço')),
+      );
+      return;
+    }
+    // Por enquanto, só exibe o texto digitado. Depois pode integrar geocoding.
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Buscando endereço: $input')));
+    // Limpa o campo de busca se quiser:
+    // _searchController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mapa Interativo'),
-        backgroundColor: Colors.teal,
+        title: const Text('Mapa'),
+        backgroundColor: Colors.orange[800],
       ),
       body: _locationLoaded
-          ? FlutterMap(
-              options: MapOptions(center: _userLocation, zoom: 15),
+          ? Column(
               children: [
-                TileLayer(
-                  urlTemplate:
-                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                  subdomains: const ['a', 'b', 'c'],
-                ),
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      point: _userLocation,
-                      width: 40,
-                      height: 40,
-                      child: const Icon(
-                        Icons.person_pin_circle,
-                        size: 40,
-                        color: Colors.blue,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            hintText: 'Buscar endereço',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 0,
+                              horizontal: 12,
+                            ),
+                          ),
+                          onSubmitted: (_) => _onSearch(),
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: _onSearch,
+                        child: const Icon(Icons.search),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: FlutterMap(
+                    options: MapOptions(center: _userLocation, zoom: 15),
+                    children: [
+                      TileLayer(
+                        urlTemplate:
+                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        subdomains: const ['a', 'b', 'c'],
+                      ),
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: _userLocation,
+                            width: 40,
+                            height: 40,
+                            child: const Icon(
+                              Icons.person_pin_circle,
+                              size: 40,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             )

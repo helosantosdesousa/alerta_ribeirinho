@@ -147,8 +147,13 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _sendReport,
-                child: const Text('Enviar Reporte'),
+                child: const Text(
+                  'Enviar Reporte',
+                  style: TextStyle(fontSize: 18),
+                ),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),

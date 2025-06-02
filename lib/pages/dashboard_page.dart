@@ -4,6 +4,7 @@ import 'shelter_page.dart';
 import 'safe_page.dart';
 import 'educational_page.dart';
 import 'profile_page.dart';
+import 'map_page.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -30,7 +31,7 @@ class DashboardPage extends StatelessWidget {
             width: double.infinity,
             color: Colors.orange[100],
             padding: const EdgeInsets.all(16),
-             child: const Text(
+            child: const Text(
               '⚠️ Alerta Laranja: Risco de Inundação Moderada',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -59,7 +60,12 @@ class DashboardPage extends StatelessWidget {
                     ),
                   );
                 }),
-                _quickAction(Icons.map, 'Ver Mapa', () {}),
+                _quickAction(Icons.map, 'Ver Mapa', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapPage()),
+                  );
+                }),
                 _quickAction(Icons.verified_user, 'Estou Seguro', () {
                   Navigator.push(
                     context,
@@ -113,6 +119,10 @@ class DashboardPage extends StatelessWidget {
               break;
             case 1:
               // mapa
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const MapPage()),
+              );
               break;
             case 2:
               // reportar

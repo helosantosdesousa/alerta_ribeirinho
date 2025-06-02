@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class ReportIncidentPage extends StatefulWidget {
   const ReportIncidentPage({super.key});
@@ -19,13 +21,14 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
   ];
 
   String _description = '';
-  double _latitude = -23.5505;
-  double _longitude = -46.6333;
+  LatLng _currentPosition = LatLng(-23.5505, -46.6333);
+
+  final MapController _mapController = MapController();
 
   void _pickMedia() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Inserir foto ou vídeo')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Inserir foto ou vídeo')));
   }
 
   void _sendReport() {
@@ -35,11 +38,10 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Reporte enviado!\nTipo: $_selectedIncidentType\nDescrição: $_description\nLocalização: ($_latitude, $_longitude)',
+            'Reporte enviado!\nTipo: $_selectedIncidentType\nDescrição: $_description\nLocalização: (${_currentPosition.latitude.toStringAsFixed(5)}, ${_currentPosition.longitude.toStringAsFixed(5)})',
           ),
         ),
       );
-
     }
   }
 
@@ -62,10 +64,10 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
                   border: OutlineInputBorder(),
                 ),
                 items: _incidentTypes
-                    .map((type) => DropdownMenuItem(
-                          value: type,
-                          child: Text(type),
-                        ))
+                    .map(
+                      (type) =>
+                          DropdownMenuItem(value: type, child: Text(type)),
+                    )
                     .toList(),
                 value: _selectedIncidentType,
                 onChanged: (val) => setState(() => _selectedIncidentType = val),
@@ -91,35 +93,54 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
                 label: const Text('Adicionar Foto/Vídeo'),
               ),
               const SizedBox(height: 24),
-
               Text(
-                'Localização (ajuste o pino):',
+                'Localização (arraste o pino para ajustar):',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
-              Container(
-                height: 200,
-                color: Colors.grey[300],
-                child: Stack(
+              SizedBox(
+                height: 300,
+                child: FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(center: _currentPosition, zoom: 13),
                   children: [
-                    const Center(child: Text('Mapa - placeholder')),
-                    Positioned(
-                      left: 90,
-                      top: 80,
-                      child: GestureDetector(
-                        onPanUpdate: (details) {
-                          setState(() {
-                            double newLeft = (90 + details.delta.dx).clamp(0, 200 - 30);
-                            double newTop = (80 + details.delta.dy).clamp(0, 200 - 30);
-                          });
-                        },
-                        child: const Icon(
-                          Icons.location_pin,
-                          color: Colors.red,
-                          size: 30,
+                    TileLayer(
+                      urlTemplate:
+                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      subdomains: const ['a', 'b', 'c'],
+                      userAgentPackageName: 'com.example.app',
+                    ),
+                    MarkerLayer(
+                      markers: [
+                        Marker(
+                          point: _currentPosition,
+                          width: 80,
+                          height: 80,
+                          child: GestureDetector(
+                            onPanUpdate: (details) {
+                              final localPoint = _mapController
+                                  .latLngToScreenPoint(_currentPosition);
+                              final newPoint = CustomPoint(
+                                localPoint.x + details.delta.dx,
+                                localPoint.y + details.delta.dy,
+                              );
+                              final newLatLng = _mapController.pointToLatLng(
+                                newPoint,
+                              );
+
+                              setState(() {
+                                _currentPosition = newLatLng;
+                              });
+                            },
+                            child: const Icon(
+                              Icons.location_pin,
+                              color: Colors.red,
+                              size: 50,
+                            ),
+                          ),
                         ),
-                      ),
-                    )
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -130,7 +151,7 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-              )
+              ),
             ],
           ),
         ),

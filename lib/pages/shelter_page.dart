@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Modelo simples de Abrigo
 class Shelter {
   final String name;
   final String address;
@@ -10,7 +9,7 @@ class Shelter {
   final bool hasWater;
   final bool hasFood;
   final bool hasMattresses;
-  final String routeUrl; // link para rota (Google Maps, etc)
+  final String routeUrl;
 
   Shelter({
     required this.name,
@@ -24,10 +23,8 @@ class Shelter {
     required this.routeUrl,
   });
 
-  // Retorna a porcentagem de ocupação
   double get occupancyRate => occupied / capacity;
 
-  // Cor do indicador de lotação
   Color get occupancyColor {
     final rate = occupancyRate;
     if (rate < 0.7) return Colors.green;
@@ -35,7 +32,6 @@ class Shelter {
     return Colors.red;
   }
 
-  // Texto do status
   String get occupancyStatus {
     final rate = occupancyRate;
     if (rate < 0.7) return "Vagas Disponíveis";
@@ -44,7 +40,6 @@ class Shelter {
   }
 }
 
-// Tela principal da lista de abrigos
 class ShelterPage extends StatelessWidget {
   final List<Shelter> shelters = [
     Shelter(
@@ -99,7 +94,9 @@ class ShelterPage extends StatelessWidget {
               radius: 12,
             ),
             title: Text(shelter.name),
-            subtitle: Text('${shelter.address}\nDistância: ${shelter.distanceKm.toStringAsFixed(1)} km'),
+            subtitle: Text(
+              '${shelter.address}\nDistância: ${shelter.distanceKm.toStringAsFixed(1)} km',
+            ),
             isThreeLine: true,
             trailing: Icon(Icons.chevron_right),
             onTap: () {
@@ -117,7 +114,6 @@ class ShelterPage extends StatelessWidget {
   }
 }
 
-// Tela de detalhes do abrigo
 class ShelterDetailsPage extends StatelessWidget {
   final Shelter shelter;
 
@@ -137,7 +133,6 @@ class ShelterDetailsPage extends StatelessWidget {
   }
 
   void _openRoute(BuildContext context) {
-    // Aqui pode abrir link no navegador ou app de mapas (exemplo simples)
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Abrir rota para: ${shelter.routeUrl}')),
     );
@@ -170,7 +165,10 @@ class ShelterDetailsPage extends StatelessWidget {
             Text('Vagas disponíveis: $availableSpots'),
             const SizedBox(height: 16),
 
-            Text('Recursos disponíveis:', style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Recursos disponíveis:',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 8),
             _resourceRow('Água', shelter.hasWater),
             _resourceRow('Comida', shelter.hasFood),
@@ -180,11 +178,20 @@ class ShelterDetailsPage extends StatelessWidget {
             Center(
               child: ElevatedButton.icon(
                 onPressed: () => _openRoute(context),
-                icon: const Icon(Icons.navigation),
-                label: const Text('Mostrar rota'),
+                icon: const Icon(
+                  Icons.navigation,
+                  color: Color.fromARGB(255, 6, 70, 165),
+                ),
+                label: const Text(
+                  'Mostrar rota',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange[800],
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  backgroundColor: Colors.blueAccent,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 36,
+                    vertical: 16,
+                  ),
                 ),
               ),
             ),

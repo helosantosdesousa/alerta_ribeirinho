@@ -19,13 +19,12 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
   ];
 
   String _description = '';
-  // Simulação de localização (latitude e longitude)
   double _latitude = -23.5505;
   double _longitude = -46.6333;
 
   void _pickMedia() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Funcionalidade de foto/vídeo mockada.')),
+      const SnackBar(content: Text('Inserir foto ou vídeo')),
     );
   }
 
@@ -33,7 +32,6 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // Aqui você enviaria os dados para o backend ou serviço
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -42,8 +40,6 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
         ),
       );
 
-      // Opcional: limpar campos ou voltar à tela anterior
-      // Navigator.pop(context);
     }
   }
 
@@ -96,7 +92,6 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
               ),
               const SizedBox(height: 24),
 
-              // Placeholder do mapa
               Text(
                 'Localização (ajuste o pino):',
                 style: Theme.of(context).textTheme.titleMedium,
@@ -108,17 +103,14 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
                 child: Stack(
                   children: [
                     const Center(child: Text('Mapa - placeholder')),
-                    // Simulação de pino que pode ser movido
                     Positioned(
                       left: 90,
                       top: 80,
                       child: GestureDetector(
                         onPanUpdate: (details) {
                           setState(() {
-                            // Apenas uma simulação básica de movimento do pino no container
                             double newLeft = (90 + details.delta.dx).clamp(0, 200 - 30);
                             double newTop = (80 + details.delta.dy).clamp(0, 200 - 30);
-                            // Não atualizamos latitude/longitude reais, só posição visual
                           });
                         },
                         child: const Icon(

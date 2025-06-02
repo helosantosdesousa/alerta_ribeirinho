@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'report_incident_page.dart'; // Tela para reportar incidente
+import 'report_incident_page.dart';
 import 'shelter_page.dart';
 import 'safe_page.dart';
 import 'educational_page.dart';
@@ -12,25 +12,31 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Alerta Ribeirinho'),
+        title: const Text(
+          'Alerta Ribeirinho',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 22,
+          ),
+        ),
         backgroundColor: Colors.orange[800],
+        centerTitle: true,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Nível de alerta atual
           Container(
             width: double.infinity,
             color: Colors.orange[100],
             padding: const EdgeInsets.all(16),
-            child: const Text(
+             child: const Text(
               '⚠️ Alerta Laranja: Risco de Inundação Moderada',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 16),
 
-          // Ações Rápidas
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: const Text(
@@ -55,14 +61,12 @@ class DashboardPage extends StatelessWidget {
                 }),
                 _quickAction(Icons.map, 'Ver Mapa', () {}),
                 _quickAction(Icons.verified_user, 'Estou Seguro', () {
-                  // Ação para estou seguro
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SafePage()),
                   );
                 }),
                 _quickAction(Icons.location_city, 'Abrigos Próximos', () {
-                  // Navega para tela de abrigos
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ShelterPage()),
@@ -73,7 +77,7 @@ class DashboardPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Feed de notícias
+          // feed de noticias
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: const Text(
@@ -98,41 +102,41 @@ class DashboardPage extends StatelessWidget {
           ),
         ],
       ),
-      // Menu de navegação inferior
+
+      //  navbar embaixo
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.orange[800],
         onTap: (index) {
-          // Tratar navegação pelo BottomNavigationBar
           switch (index) {
             case 0:
-              // Início (aqui não muda nada, já está no Dashboard)
               break;
             case 1:
+              // mapa
               break;
             case 2:
-              // Reportar incidente
+              // reportar
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const ReportIncidentPage()),
               );
               break;
             case 3:
-              // Abrigos Próximos
+              // abrigos
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => ShelterPage()),
               );
               break;
             case 4:
-              // Educar (implemente se quiser)
+              // educacao
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => EducationalPage()),
               );
               break;
             case 5:
-              // Perfil (implemente se quiser)
+              // perfil
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => ProfilePage()),
@@ -155,7 +159,6 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  // Widget auxiliar para ações rápidas com callback onPressed
   Widget _quickAction(IconData icon, String label, VoidCallback onPressed) {
     return ElevatedButton.icon(
       onPressed: onPressed,

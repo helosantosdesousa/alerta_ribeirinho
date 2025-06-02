@@ -50,7 +50,11 @@ class _MapPageState extends State<MapPage> {
     );
 
     try {
-      final response = await http.get(url, headers: {});
+      final response = await http.get(
+        url,
+        headers: {
+        },
+      );
 
       if (response.statusCode == 200) {
         final List data = jsonDecode(response.body);

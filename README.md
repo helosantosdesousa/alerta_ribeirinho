@@ -7,8 +7,8 @@ O Alerta Ribeirinho é um aplicativo móvel para segurança ambiental com foco e
 - Heloísa Santos de Sousa - 550256
 - Samuel de Paula Santolim - 99115
 - Francisco Henrique Lima -
-- Lucas Henrique Carrascosa -
-- Pedro Reginaldo -
+- Lucas Henrique Carrascosa - 99883
+- Pedro Reginato - 550896
 
 ## 📱 Tecnologias utilizadas
 

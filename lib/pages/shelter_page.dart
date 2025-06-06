@@ -51,6 +51,7 @@ class ShelterPage extends StatelessWidget {
       hasWater: true,
       hasFood: true,
       hasMattresses: false,
+      routeUrl: ''
     ),
     Shelter(
       name: 'Abrigo Bairro Alto',
@@ -61,6 +62,8 @@ class ShelterPage extends StatelessWidget {
       hasWater: true,
       hasFood: false,
       hasMattresses: true,
+      routeUrl: ''
+
     ),
     Shelter(
       name: 'Abrigo Vila Nova',
@@ -71,6 +74,7 @@ class ShelterPage extends StatelessWidget {
       hasWater: false,
       hasFood: true,
       hasMattresses: true,
+      routeUrl: ''
     ),
   ];
 
